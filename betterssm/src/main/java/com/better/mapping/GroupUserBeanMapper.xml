@@ -2,9 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.better.dao.GroupUserBeanMapper" >
   <resultMap id="BaseResultMap" type="com.better.entity.GroupUserBeanKey" >
-    <id column="UID" property="uid" jdbcType="INTEGER" />
-    <id column="GID" property="gid" jdbcType="INTEGER" />
+  	<id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="UID" property="uid" jdbcType="INTEGER" />
+    <result column="GID" property="gid" jdbcType="INTEGER" />
   </resultMap>
+  
+   <resultMap id="UserBeanMap" type="com.better.entity.UserBean" >
+    <id column="UID" property="uid" jdbcType="INTEGER" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="PASS" property="pass" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="CHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="IS_ADMIN" property="isAdmin" jdbcType="SMALLINT" />
+  </resultMap>
+  
   <delete id="deleteByPrimaryKey" parameterType="com.better.entity.GroupUserBeanKey" >
     delete from tbl_chatgroup_user
     where UID = #{uid,jdbcType=INTEGER}
@@ -33,4 +45,15 @@
       </if>
     </trim>
   </insert>
+  
+  <select id="selectUserList" resultMap="UserBeanMap" parameterType="java.lang.Integer" >
+  	SELECT
+  	u.uid as UID, u.username as USERNAME, u.pass as PASS, u.email as EMAIL,
+  	u.mobile as MOBILE, u.status as STATUS, u.isAdmin as IS_ADMIN
+  	
+  	FROM tbl_user u
+  	INNER JOIN tbl_chatgroup_user c 
+  	ON u.uid = c.uid
+  	AND c.gid = #{gid,jdbcType=INTEGER}
+  </select>
 </mapper>

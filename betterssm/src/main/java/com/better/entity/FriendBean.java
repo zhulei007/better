@@ -1,10 +1,21 @@
 package com.better.entity;
-
+/**
+ * @version 1.0
+ * @author zhulei
+ * @since 2016-01-07
+ */
 public class FriendBean {
+	/**
+	 * 编号
+	 */
     private Integer id;
-
+    /**
+     * 用户id
+     */
     private Integer uid;
-
+    /**
+     * 朋友id
+     */
     private Integer fid;
 
     public Integer getId() {

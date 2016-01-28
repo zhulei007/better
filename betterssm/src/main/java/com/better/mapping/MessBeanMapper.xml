@@ -2,45 +2,63 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.better.dao.MessBeanMapper" >
   <resultMap id="BaseResultMap" type="com.better.entity.MessBean" >
-    <id column="TID" property="tid" jdbcType="INTEGER" />
-    <result column="MID" property="mid" jdbcType="INTEGER" />
+    <id column="MID" property="mid" jdbcType="DECIMAL" />
+    <result column="TID" property="tid" jdbcType="DECIMAL" />
     <result column="TITLE" property="title" jdbcType="VARCHAR" />
-    <result column="UID" property="uid" jdbcType="INTEGER" />
+    <result column="UID" property="uid" jdbcType="DECIMAL" />
     <result column="MTIME" property="mtime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
   </resultMap>
+  
   <resultMap id="ResultMapWithBLOBs" type="com.better.entity.MessBeanWithBLOBs" extends="BaseResultMap" >
-    <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" />
-    <result column="RECEIVER" property="receiver" jdbcType="LONGVARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="RECEIVER" property="receiver" jdbcType="VARCHAR" />
   </resultMap>
+  
   <sql id="Base_Column_List" >
-    TID, MID, TITLE, UID, MTIME
+     MID,TID, TITLE, UID, MTIME, STATUS
   </sql>
+  
   <sql id="Blob_Column_List" >
     CONTENT, RECEIVER
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  
+  <select id="selectMessBean" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  select 
+  <include refid="Base_Column_List" />
+  from tbl_messinformation
+  where UID = #{uid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectMessBeanWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from tbl_messinformation
-    where TID = #{tid,jdbcType=INTEGER}
+    where UID = #{uid,jdbcType=INTEGER}
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tbl_messinformation
-    where TID = #{tid,jdbcType=INTEGER}
+    where UID = #{uid,jdbcType=INTEGER}
   </delete>
+  
   <insert id="insert" parameterType="com.better.entity.MessBeanWithBLOBs" >
     insert into tbl_messinformation (TID, MID, TITLE, 
-      UID, MTIME, CONTENT, 
+      UID, MTIME, CONTENT, STATUS
       RECEIVER)
     values (#{tid,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{uid,jdbcType=INTEGER}, #{mtime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}, 
-      #{receiver,jdbcType=LONGVARCHAR})
+      #{receiver,jdbcType=LONGVARCHAR}), #{status,jdbcType=INTEGER}
   </insert>
+  
   <insert id="insertSelective" parameterType="com.better.entity.MessBeanWithBLOBs" >
     insert into tbl_messinformation
     <trim prefix="(" suffix=")" suffixOverrides="," >
+    <if test="uid != null" >
+        UID,
+      </if>
       <if test="tid != null" >
         TID,
       </if>
@@ -49,9 +67,6 @@
       </if>
       <if test="title != null" >
         TITLE,
-      </if>
-      <if test="uid != null" >
-        UID,
       </if>
       <if test="mtime != null" >
         MTIME,
@@ -62,8 +77,14 @@
       <if test="receiver != null" >
         RECEIVER,
       </if>
+       <if test="status != null" >
+        STATUS
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+    <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
       <if test="tid != null" >
         #{tid,jdbcType=INTEGER},
       </if>
@@ -72,9 +93,6 @@
       </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="uid != null" >
-        #{uid,jdbcType=INTEGER},
       </if>
       <if test="mtime != null" >
         #{mtime,jdbcType=TIMESTAMP},
@@ -85,13 +103,17 @@
       <if test="receiver != null" >
         #{receiver,jdbcType=LONGVARCHAR},
       </if>
+      <if test="status != null" >
+        #{status,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.better.entity.MessBeanWithBLOBs" >
     update tbl_messinformation
     <set >
-      <if test="mid != null" >
-        MID = #{mid,jdbcType=INTEGER},
+      <if test="=tid != null" >
+       TID = #{tid,jdbcType=INTEGER} ,
       </if>
       <if test="title != null" >
         TITLE = #{title,jdbcType=VARCHAR},
@@ -108,25 +130,33 @@
       <if test="receiver != null" >
         RECEIVER = #{receiver,jdbcType=LONGVARCHAR},
       </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
     </set>
-    where TID = #{tid,jdbcType=INTEGER}
+    where MID = #{mid,jdbcType=INTEGER}
   </update>
+  
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.better.entity.MessBeanWithBLOBs" >
     update tbl_messinformation
-    set MID = #{mid,jdbcType=INTEGER},
+    set TID = #{tid,jdbcType=INTEGER},
       TITLE = #{title,jdbcType=VARCHAR},
       UID = #{uid,jdbcType=INTEGER},
       MTIME = #{mtime,jdbcType=TIMESTAMP},
       CONTENT = #{content,jdbcType=LONGVARCHAR},
-      RECEIVER = #{receiver,jdbcType=LONGVARCHAR}
-    where TID = #{tid,jdbcType=INTEGER}
+      RECEIVER = #{receiver,jdbcType=LONGVARCHAR},
+      STATUS = #{status,jdbcType=LONGVARCHAR}
+    where MID = #{mid,jdbcType=INTEGER}
   </update>
+  
   <update id="updateByPrimaryKey" parameterType="com.better.entity.MessBean" >
     update tbl_messinformation
-    set MID = #{mid,jdbcType=INTEGER},
+    set TID = #{tid,jdbcType=INTEGER},
       TITLE = #{title,jdbcType=VARCHAR},
       UID = #{uid,jdbcType=INTEGER},
-      MTIME = #{mtime,jdbcType=TIMESTAMP}
-    where TID = #{tid,jdbcType=INTEGER}
+      MTIME = #{mtime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=LONGVARCHAR}
+    where MID = #{mid,jdbcType=INTEGER}
   </update>
+  
 </mapper>

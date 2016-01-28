@@ -1,18 +1,36 @@
 package com.better.entity;
 
 import java.util.Date;
-
+/**
+ * @version 1.0
+ * @author zhulei
+ * @since 2016-01-07
+ */
 public class GroupBean {
+
+	/**
+	 * 群组id
+	 */
     private Integer gid;
-
+    /**
+     * 群组名称
+     */
     private String gname;
-
+    /**
+     * 群组简介
+     */
     private String memo;
-
+    /**
+     * 群组状态
+     */
     private Short status;
-
+    /**
+     * 管理员id:群组只有一个管理员，因此保存在这里
+     */
     private Integer uid;
-
+    /**
+     * 创建时间
+     */
     private Date gtime;
 
     public Integer getGid() {

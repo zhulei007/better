@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.better.dao.UserBeanMapper" >
+
   <resultMap id="BaseResultMap" type="com.better.entity.UserBean" >
     <id column="UID" property="uid" jdbcType="INTEGER" />
     <result column="USERNAME" property="username" jdbcType="VARCHAR" />
@@ -8,30 +9,63 @@
     <result column="EMAIL" property="email" jdbcType="VARCHAR" />
     <result column="MOBILE" property="mobile" jdbcType="CHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <!-- 下面的字段property属性，之前和数据库不一致，这样容易出错，现在数据库字段也为“isAdmin” -->
     <result column="IS_ADMIN" property="isAdmin" jdbcType="SMALLINT" />
-    <result column="DEPART_ID" property="departId" jdbcType="INTEGER" />
   </resultMap>
+  
   <sql id="Base_Column_List" >
-    UID, USERNAME, PASS, EMAIL, MOBILE, STATUS, IS_ADMIN, DEPART_ID
+    UID, USERNAME, PASS, EMAIL, MOBILE, STATUS, IS_ADMIN
   </sql>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from tbl_user
     where UID = #{uid,jdbcType=INTEGER}
   </select>
+  <!-- -->
+  <select id="selectUserListSelective" resultMap="BaseResultMap" parameterType="com.better.entity.UserBean">
+  	select 
+  	 <include refid="Base_Column_List" />
+  	from tbl_user
+  	where 1=1 
+  	 <trim>
+      <if test="uid != null" >
+       and UID = #{uid,jdbcType=INTEGER}
+      </if>
+       <if test="username != null" >
+       and USERNAME = #{username,jdbcType=VARCHAR}
+      </if>
+       <if test="pass != null" >
+       and PASS = #{pass,jdbcType=VARCHAR}
+      </if>
+      <if test="email != null" >
+       and EMAIL = #{email,jdbcType=VARCHAR}
+      </if>
+       <if test="mobile != null" >
+       and MOBILE = #{mobile,jdbcType=CHAR}
+      </if>
+      <if test="status != null" >
+       and STATUS = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="isAdmin != null" >
+       and IS_ADMIN = #{isAdmin,jdbcType=SMALLINT}
+      </if>
+    </trim>
+  </select>
+   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tbl_user
     where UID = #{uid,jdbcType=INTEGER}
   </delete>
+  
   <insert id="insert" parameterType="com.better.entity.UserBean" >
-    insert into tbl_user (UID, USERNAME, PASS, 
-      EMAIL, MOBILE, STATUS, 
-      IS_ADMIN, DEPART_ID)
+    insert into tbl_user (UID, USERNAME, PASS, EMAIL, MOBILE, STATUS, IS_ADMIN)
     values (#{uid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{pass,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=CHAR}, #{status,jdbcType=INTEGER}, 
-      #{isAdmin,jdbcType=SMALLINT}, #{departId,jdbcType=INTEGER})
+      #{isAdmin,jdbcType=SMALLINT})
   </insert>
+  
   <insert id="insertSelective" parameterType="com.better.entity.UserBean" >
     insert into tbl_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -56,9 +90,6 @@
       <if test="isAdmin != null" >
         IS_ADMIN,
       </if>
-      <if test="departId != null" >
-        DEPART_ID,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="uid != null" >
@@ -82,11 +113,9 @@
       <if test="isAdmin != null" >
         #{isAdmin,jdbcType=SMALLINT},
       </if>
-      <if test="departId != null" >
-        #{departId,jdbcType=INTEGER},
-      </if>
     </trim>
   </insert>
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.better.entity.UserBean" >
     update tbl_user
     <set >
@@ -108,12 +137,10 @@
       <if test="isAdmin != null" >
         IS_ADMIN = #{isAdmin,jdbcType=SMALLINT},
       </if>
-      <if test="departId != null" >
-        DEPART_ID = #{departId,jdbcType=INTEGER},
-      </if>
     </set>
     where UID = #{uid,jdbcType=INTEGER}
   </update>
+  
   <update id="updateByPrimaryKey" parameterType="com.better.entity.UserBean" >
     update tbl_user
     set USERNAME = #{username,jdbcType=VARCHAR},
@@ -121,8 +148,8 @@
       EMAIL = #{email,jdbcType=VARCHAR},
       MOBILE = #{mobile,jdbcType=CHAR},
       STATUS = #{status,jdbcType=INTEGER},
-      IS_ADMIN = #{isAdmin,jdbcType=SMALLINT},
-      DEPART_ID = #{departId,jdbcType=INTEGER}
+      IS_ADMIN = #{isAdmin,jdbcType=SMALLINT}
     where UID = #{uid,jdbcType=INTEGER}
   </update>
+  
 </mapper>

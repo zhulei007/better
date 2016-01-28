@@ -1,21 +1,38 @@
 package com.better.entity;
-
+/**
+ * @version 1.0
+ * @author zhulei
+ * @since 2016-01-07
+ */
 public class UserBean {
+	/**
+	 * 用户id
+	 */
     private Integer uid;
-
+    /**
+     * 用户名称
+     */
     private String username;
-
+    /**
+     * 密码
+     */
     private String pass;
-
+    /**
+     * 邮箱
+     */
     private String email;
-
+    /**
+     * 手机
+     */
     private String mobile;
-
+    /**
+     * 用户状态
+     */
     private Integer status;
-
+    /**
+     * 组织管理员标示
+     */
     private Short isAdmin;
-
-    private Integer departId;
 
     public Integer getUid() {
         return uid;
@@ -73,11 +90,12 @@ public class UserBean {
         this.isAdmin = isAdmin;
     }
 
-    public Integer getDepartId() {
-        return departId;
-    }
 
-    public void setDepartId(Integer departId) {
-        this.departId = departId;
-    }
+	@Override
+	public String toString() {
+		return "UserBean [uid=" + uid + ", username=" + username + ", pass="
+				+ pass + ", email=" + email + ", mobile=" + mobile
+				+ ", status=" + status + ", isAdmin=" + isAdmin + "]";
+	}
+    
 }

@@ -1,18 +1,38 @@
 package com.better.entity;
-
+/**
+ * @version 1.0
+ * @author zhulei
+ * @since 2016-01-07
+ */
 public class OrgBean {
+	
+	/**
+	 * 组织id
+	 */
     private Integer oid;
-
+    /**
+     * 组织名称
+     */
     private String oname;
-
+    /**
+     * 标志：可以是副标题，也可直接保存标志图片链接（长度为100）
+     */
     private String logo;
-
+    /**
+     * 组织附件
+     */
     private String ofile;
-
+    /**
+     * 组织描述
+     */
     private String descipt;
-
+    /**
+     * 组织状态
+     */
     private Short status;
-
+    /**
+     * 组织管理员id：暂时保存超级管理员id
+     */
     private Integer uid;
 
     public Integer getOid() {

@@ -6,6 +6,17 @@
     <result column="UID" property="uid" jdbcType="INTEGER" />
     <result column="FID" property="fid" jdbcType="INTEGER" />
   </resultMap>
+  
+  <resultMap id="UserMap" type="com.better.entity.UserBean" >
+    <id column="UID" property="uid" jdbcType="INTEGER" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="PASS" property="pass" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="CHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="IS_ADMIN" property="isAdmin" jdbcType="SMALLINT" />
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     ID, UID, FID
   </sql>
@@ -14,6 +25,14 @@
     <include refid="Base_Column_List" />
     from tbl_user_user
     where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectFriendList" resultMap="UserMap" parameterType="java.lang.Integer">
+   SELECT 
+   UID,USERNAME 
+   FROM tbl_user WHERE UID IN
+ 	(SELECT fid AS fid FROM tbl_user_user WHERE UID=#{0}
+ 	UNION ALL
+ 	SELECT uid AS fid FROM tbl_user_user WHERE FID=#{0})
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tbl_user_user

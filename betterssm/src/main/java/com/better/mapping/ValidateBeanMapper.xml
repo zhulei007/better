@@ -2,38 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.better.dao.ValidateBeanMapper" >
   <resultMap id="BaseResultMap" type="com.better.entity.ValidateBean" >
-    <id column="VALIDATE_ID" property="validateId" jdbcType="INTEGER" />
-    <result column="OID" property="oid" jdbcType="INTEGER" />
+    <id column="VALIDATE_ID" property="validateId" jdbcType="DECIMAL" />
+    <result column="ORGID" property="orgid" jdbcType="DECIMAL" />
+     <result column="DEPID" property="depid" jdbcType="DECIMAL" />
+      <result column="USERID" property="userid" jdbcType="DECIMAL" />
     <result column="VALIDATE_CODE" property="validateCode" jdbcType="VARCHAR" />
-    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    VALIDATE_ID, OID, VALIDATE_CODE, STATUS
+    VALIDATE_ID, ORGID,DEPID,USERID, VALIDATE_CODE, STATUS
   </sql>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from tbl_validateuser
     where VALIDATE_ID = #{validateId,jdbcType=INTEGER}
   </select>
+  
+  <select id="selectListSelective" resultMap="BaseResultMap" parameterType="com.better.entity.ValidateBean" >
+    select  
+    <include refid="Base_Column_List" />
+    from tbl_validateuser
+    where 1=1
+     <trim>
+      <if test="orgid != null" >
+       and  ORGID = #{orgid,jdbcType="INTEGER"}
+      </if>
+       <if test="depid != null" >
+       and DEPID = #{depid,jdbcType="INTEGER"}
+      </if>
+       <if test="userid != null" >
+       and USERID = #{userid,jdbcType="INTEGER"}
+      </if>
+      <if test="pass != null" >
+       and STATUS = #{status,jdbcType="INTEGER"}
+      </if>
+    </trim>
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tbl_validateuser
     where VALIDATE_ID = #{validateId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.better.entity.ValidateBean" >
-    insert into tbl_validateuser (VALIDATE_ID, OID, VALIDATE_CODE, 
-      STATUS)
-    values (#{validateId,jdbcType=INTEGER}, #{oid,jdbcType=INTEGER}, #{validateCode,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER})
-  </insert>
+  
   <insert id="insertSelective" parameterType="com.better.entity.ValidateBean" >
     insert into tbl_validateuser
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="validateId != null" >
         VALIDATE_ID,
       </if>
-      <if test="oid != null" >
-        OID,
+      <if test="orgid != null" >
+        ORGID,
+      </if>
+       <if test="deoid != null" >
+        DEPID,
+      </if>
+       <if test="userid != null" >
+        USERID,
       </if>
       <if test="validateCode != null" >
         VALIDATE_CODE,
@@ -46,8 +72,14 @@
       <if test="validateId != null" >
         #{validateId,jdbcType=INTEGER},
       </if>
-      <if test="oid != null" >
-        #{oid,jdbcType=INTEGER},
+      <if test="orgid != null" >
+        #{orgid,jdbcType=INTEGER},
+      </if>
+       <if test="depid != null" >
+        #{depid,jdbcType=INTEGER},
+      </if>
+       <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
       </if>
       <if test="validateCode != null" >
         #{validateCode,jdbcType=VARCHAR},
@@ -57,11 +89,24 @@
       </if>
     </trim>
   </insert>
+  <!-- 批量插入验证信息 -->
+  <select id="insertListSelective" parameterType="java.util.List">
+  	insert into tbl_validateuser(ORGID,DEPID,VALIDATE_CODE) 
+		<foreach collection="list"  item="itm" separator=",">
+			(#{itm.orgid},#{itm.depid},#{itm.validateCode})
+		</foreach>
+  </select>
   <update id="updateByPrimaryKeySelective" parameterType="com.better.entity.ValidateBean" >
     update tbl_validateuser
     <set >
-      <if test="oid != null" >
-        OID = #{oid,jdbcType=INTEGER},
+      <if test="orgid != null" >
+        ORGID = #{orgid,jdbcType=INTEGER},
+      </if>
+       <if test="depid != null" >
+        ORGID = #{depid,jdbcType=INTEGER},
+      </if>
+       <if test="userid != null" >
+        ORGID = #{userid,jdbcType=INTEGER},
       </if>
       <if test="validateCode != null" >
         VALIDATE_CODE = #{validateCode,jdbcType=VARCHAR},
@@ -74,7 +119,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.better.entity.ValidateBean" >
     update tbl_validateuser
-    set OID = #{oid,jdbcType=INTEGER},
+    set ORGID = #{orgid,jdbcType=INTEGER},
+    	DEPID = #{depid,jdbcType=INTEGER},
+    	USERID = #{userid,jdbcType=INTEGER},
       VALIDATE_CODE = #{validateCode,jdbcType=VARCHAR},
       STATUS = #{status,jdbcType=INTEGER}
     where VALIDATE_ID = #{validateId,jdbcType=INTEGER}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.better.dao.UserMessBeanMapper" >
+  <resultMap id="BaseResultMap" type="com.better.entity.UserMessBean" >
+    <id column="UID" property="uid" jdbcType="INTEGER" />
+    <result column="SEENIDS" property="seenids" jdbcType="LONGVARCHAR" />
+    <result column="UNSEENIDS" property="unseenids" jdbcType="LONGVARCHAR" />
+    <result column="DELETEIDS" property="deleteids" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  	UID, SEENIDS, UNSEENIDS, DELETEIDS
+  </sql>
+  
+  <select id="selectUserMess" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_user_mess
+    where UID = #{uid, jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteUserMess" parameterType="java.lang.Integer" >
+    delete from tbl_user_mess
+    where UID = #{uid,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.better.entity.UserMessBean" >
+    insert into tbl_user_mess (UID, SEENIDS, UNSEENIDS, DELETEIDS)
+    values (#{uid,jdbcType=INTEGER}, #{seenids,jdbcType=LONGVARCHAR}, #{unseenids,jdbcType=LONGVARCHAR}, 
+    #{deleteids,jdbcType=LONGVARCHAR}
+  </insert>
+  
+  <update id="updateUserMess" parameterType="com.better.entity.UserMessBean" >
+    update tbl_user_mess
+    <set >
+      <if test="seenids != null" >
+        SEENIDS = #{seenids,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="unseenids != null" >
+        UNSEENIDS = #{unseenids,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="email != null" >
+        DELETEIDS = #{deleteids,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where UID = #{uid,jdbcType=INTEGER}
+  </update>
+
+</mapper>

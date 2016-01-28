@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.better.dao.AdminBeanMapper" >
+  <resultMap id="BaseResultMap" type="com.better.entity.AdminBean" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ORGID" property="orgId" jdbcType="INTEGER" />
+     <result column="DEPID" property="depId" jdbcType="INTEGER" />
+      <result column="ADMINID" property="adminId" jdbcType="INTEGER" />
+       <result column="RANK" property="rank" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ID, ORGID,DEPID,ADMINID, RANK
+  </sql>
+  
+  <select id="select" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from tbl_admin
+    where  ADMINID = #{adminId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAdminSelective" resultMap="BaseResultMap" parameterType="com.better.entity.AdminBean" >
+    select
+    <include refid="Base_Column_List" />
+    from tbl_admin
+    where  1=1
+    <trim>
+      <if test="orgId != null" >
+       and ORGID = #{orgId,jdbcType=INTEGER}
+      </if>
+       <if test="depId != null" >
+       and DEPID = #{depId,jdbcType=INTEGER}
+      </if>
+       <if test="adminId != null" >
+       and ADMINID = #{adminId,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from tbl_admin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.better.entity.AdminBean" >
+    insert into tbl_admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="orgId != null" >
+        ORGID,
+      </if>
+       <if test="depId != null" >
+        DEPID,
+      </if>
+       <if test="userId != null" >
+        ADMINID,
+      </if>=
+      <if test="rank != null" >
+        RANK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orgid != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+       <if test="depid != null" >
+        #{depId,jdbcType=INTEGER},
+      </if>
+       <if test="adminid != null" >
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.better.entity.AdminBean" >
+    update tbl_admin
+    <set >
+      <if test="orgid != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+       <if test="depid != null" >
+        #{depId,jdbcType=INTEGER},
+      </if>
+       <if test="adminid != null" >
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.better.entity.AdminBean" >
+    update tbl_admin
+    set ORGID = #{orgId,jdbcType=INTEGER},
+    	DEPID = #{depId,jdbcType=INTEGER},
+    	ADMINID = #{adminId,jdbcType=INTEGER},
+      RANK = #{rank,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
