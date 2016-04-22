@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.better.dao.IMTokenBeanMapper" >
+
+  <resultMap id="BaseResultMap" type="com.better.entity.IMTokenBean" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="USERID" property="userId" jdbcType="INTEGER" />
+    <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ID,USERID,TOKEN,STATUS
+  </sql>
+  
+  <select id="select" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_imtoken
+    where  = #{userId,jdbcType=INTEGER}
+  </select>
+
+  
+  <insert id="insert" parameterType="com.better.entity.IMTokenBean" >
+    insert into tbl_imtoken (USERID,TOKEN,STATUS)
+    values (#{userId,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+  </insert>
+   <insert id="insertSelective" parameterType="com.better.entity.IMTokenBean" >
+    insert into tbl_imtoken
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USERID,
+      </if>
+      <if test="token != null" >
+        TOKEN,
+      </if>
+       <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+       #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+      #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.better.entity.IMTokenBean" >
+    update tbl_user
+    <set>
+      <if test="userid != null" >
+        USERID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="token != null" >
+        TOKEN = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where USERID = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

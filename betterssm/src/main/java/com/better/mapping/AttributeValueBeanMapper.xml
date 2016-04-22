@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.better.dao.AttributeValueBeanMapper" >
+
+  <resultMap id="BaseResultMap" type="com.better.entity.AttributeValueBean" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+ 
+    <result column="ATTRIBUTEID" property="attributeid" jdbcType="INTEGER" />
+    <result column="USERID" property="userid" jdbcType="INTEGER" />
+    <result column="VALUE" property="value" jdbcType="VARCHAR" />
+
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+   ID, ATTRIBUTEID, USERID, VALUE
+   </sql>
+  
+  <select id="selectValueList" resultMap="BaseResultMap" parameterType="com.better.entity.AttributeValueBean" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_attribute_value
+    where USERID = #{userid,jdbcType=INTEGER}
+  </select>
+ 
+  <select id="selectValue" resultMap="BaseResultMap" parameterType="com.better.entity.AttributeValueBean" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_attribute_value
+    where USERID = #{userid,jdbcType=INTEGER} and ATTRIBUTEID = {attributeid,jdbcType="INTEGER"}
+  </select>
+ 
+  <delete id="delete" parameterType="com.better.entity.AttributeValueBean" >
+    delete from tbl_attribute_value
+     where USERID = #{userid,jdbcType=INTEGER} AND ATTRIBUTEID = #{attributeid,jdbcType=INTEGER} 
+  </delete>
+  
+  <insert id="insert" parameterType="com.better.entity.AttributeValueBean" >
+    insert into tbl_attribute_value
+     (ATTRIBUTEID, USERID, VALUE)
+    values (#{attributeid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}
+    
+  </insert>
+  
+  <update id="update" parameterType="com.better.entity.AttributeValueBean" >
+    update tbl_attribute_value
+    set VALUE = #{value,jdbcType=VARCHAR}
+    where USERID = #{userid,jdbcType=INTEGER} AND ATTRIBUTEID = #{attributeid,jdbcType=INTEGER} 
+  </update>
+  
+</mapper>

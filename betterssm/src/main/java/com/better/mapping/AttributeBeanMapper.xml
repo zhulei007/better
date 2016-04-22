@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.better.dao.AttributeBeanMapper" >
+
+  <resultMap id="BaseResultMap" type="com.better.entity.AttributeBean" >
+    <id column="ATTRIBUTEID" property="attributeid" jdbcType="INTEGER" />
+    <result column="ATTRIBUTENAME" property="attributename" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ATTRIBUTEID, ATTRIBUTENAME,STATUS
+  </sql>
+  
+  <select id="selectAttributeBean" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_attribute
+    where ATTRIBUTEID = #{attributeid,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteSelective" parameterType="java.lang.Integer" >
+    delete from tbl_attribute
+    where ATTRIBUTEID = #{attributeid,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.better.entity.AttributeBean" >
+    insert into tbl_attribute
+   (ATTRIBUTEID, ATTRIBUTENAME,STATUS)
+    values (#{attributeid,jdbcType=INTEGER}, #{attributename,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+  </insert>
+</mapper>
