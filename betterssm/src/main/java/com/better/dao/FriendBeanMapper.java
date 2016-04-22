@@ -51,6 +51,13 @@ public interface FriendBeanMapper {
      * @return
      */
     public FriendBean selectByPrimaryKey(Integer id);
+    
+    /**
+     * 查询一堆朋友的数据库编号
+     * @param friendBean 包含了用户ID以及朋友ID
+     * @return 数据库对应编号
+     */
+    public int selectByFriends(FriendBean friendBean);
     /**
      * 更新朋友记录<br>
      * 根据friendBean字段

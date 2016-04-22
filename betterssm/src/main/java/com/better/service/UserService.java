@@ -8,6 +8,7 @@ public interface UserService {
 	
 	/**
 	 * 添加一个用户
+	 * 添加用户只有手机号\密码，而其他的信息需要填写默认值
 	 * @param user 用户
 	 * @return
 	 */
@@ -54,5 +55,11 @@ public interface UserService {
 	 * @return
 	 */
 	public UserBean queryUser(UserBean userBean);
+	/**
+	 * 修改用户密码
+	 * 将手机号，密码，新密码装入userbean
+	 * @return
+	 */
+	public boolean changePwd(UserBean userBean,String password);
 
 }

@@ -61,4 +61,15 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	@Override
+	public boolean changePwd(UserBean userBean,String password) {
+		List<UserBean> list = userBeanMapper.selectUserListSelective(userBean);
+		if(list != null && list.size() == 1 ){
+			userBean.setPass(password);
+			userBeanMapper.updateByPrimaryKeySelective(userBean);
+			return true;
+		}
+		return false;
+	}
+
 }

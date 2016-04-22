@@ -79,7 +79,23 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.1.26</version>
 		</dependency>
+		<!-- IM -->
+	<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.4</version>
+		</dependency>
+		<!-- HttpClient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.1</version>
+		</dependency>
 	</dependencies>
+	
+	
+	
+	
 	<build>
 		<finalName>betterssm</finalName>
 	</build>

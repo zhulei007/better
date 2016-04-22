@@ -34,6 +34,14 @@
  	UNION ALL
  	SELECT uid AS fid FROM tbl_user_user WHERE FID=#{0})
   </select>
+  
+   <select id="selectByFriends" resultType="java.lang.Integer" parameterType="com.better.entity.FriendBean">
+   
+   SELECT ID  FROM tbl_user_user 
+   WHERE (UID = #{uid,jdbcType=INTEGER}  AND FID = #{fid,jdbcType=INTEGER}) OR (UID = #{fid,jdbcType=INTEGER} AND FID = #{uid,jdbcType=INTEGER})
+   
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tbl_user_user
     where ID = #{id,jdbcType=INTEGER}

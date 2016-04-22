@@ -14,6 +14,18 @@ public class UserBean {
      */
     private String username;
     /**
+     * 性别:1男，2女
+     */
+    private Integer sex;
+	/**
+     * 头像链接
+     */
+    private String head;
+    /**
+     * 个人签名
+     */
+    private String signature;
+    /**
      * 密码
      */
     private String pass;
@@ -29,6 +41,10 @@ public class UserBean {
      * 用户状态
      */
     private Integer status;
+	/**
+     * 从属部门id，用逗号分隔（可能属于多个组织）
+     */
+    private String departIds;
     /**
      * 组织管理员标示
      */
@@ -49,7 +65,29 @@ public class UserBean {
     public void setUsername(String username) {
         this.username = username == null ? null : username.trim();
     }
+    public Integer getSex() {
+		return sex;
+	}
 
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	public String getHead() {
+		return head;
+	}
+
+	public void setHead(String head) {
+		this.head = head;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
     public String getPass() {
         return pass;
     }
@@ -81,7 +119,13 @@ public class UserBean {
     public void setStatus(Integer status) {
         this.status = status;
     }
+    public String getDepartIds() {
+		return departIds;
+	}
 
+	public void setDepartIds(String departIds) {
+		this.departIds = departIds;
+	}
     public Short getIsAdmin() {
         return isAdmin;
     }
@@ -90,12 +134,12 @@ public class UserBean {
         this.isAdmin = isAdmin;
     }
 
-
 	@Override
 	public String toString() {
-		return "UserBean [uid=" + uid + ", username=" + username + ", pass="
-				+ pass + ", email=" + email + ", mobile=" + mobile
-				+ ", status=" + status + ", isAdmin=" + isAdmin + "]";
+		return "UserBean [uid=" + uid + ", username=" + username + ", sex="
+				+ sex + ", head=" + head + ", signature=" + signature
+				+ ", pass=" + pass + ", email=" + email + ", mobile=" + mobile
+				+ ", status=" + status + ", departIds=" + departIds
+				+ ", isAdmin=" + isAdmin + "]";
 	}
-    
 }
