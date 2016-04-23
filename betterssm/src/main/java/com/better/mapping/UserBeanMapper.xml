@@ -5,16 +5,21 @@
   <resultMap id="BaseResultMap" type="com.better.entity.UserBean" >
     <id column="UID" property="uid" jdbcType="INTEGER" />
     <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="SMALLINT"/>
+    <!-- 头像链接，字段长度：100 -->
+    <result column="HEAD" property="head" jdbcType="VARCHAR" />
+    <result column="SIGNATURE" property="signature" jdbcType="VARCHAR"/>
     <result column="PASS" property="pass" jdbcType="VARCHAR" />
     <result column="EMAIL" property="email" jdbcType="VARCHAR" />
     <result column="MOBILE" property="mobile" jdbcType="CHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="DEPARTIDS" property="departIds" jdbcType="VARCHAR"/>
     <!-- 下面的字段property属性，之前和数据库不一致，这样容易出错，现在数据库字段也为“isAdmin” -->
-    <result column="IS_ADMIN" property="isAdmin" jdbcType="SMALLINT" />
+    <result column="ISADMIN" property="isAdmin" jdbcType="SMALLINT" />
   </resultMap>
   
   <sql id="Base_Column_List" >
-    UID, USERNAME, PASS, EMAIL, MOBILE, STATUS, IS_ADMIN
+    UID, USERNAME, SEX, HEAD, SIGNATURE, PASS, EMAIL, MOBILE, STATUS,DEPARTIDS， ISADMIN
   </sql>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -36,6 +41,9 @@
        <if test="username != null" >
        and USERNAME = #{username,jdbcType=VARCHAR}
       </if>
+      <if test="sex !=null">
+      and SEX = #{sex,jdbcType=INTEGER}
+      </if>
        <if test="pass != null" >
        and PASS = #{pass,jdbcType=VARCHAR}
       </if>
@@ -49,7 +57,7 @@
        and STATUS = #{status,jdbcType=INTEGER}
       </if>
       <if test="isAdmin != null" >
-       and IS_ADMIN = #{isAdmin,jdbcType=SMALLINT}
+       and ISADMIN = #{isAdmin,jdbcType=SMALLINT}
       </if>
     </trim>
   </select>
@@ -60,10 +68,11 @@
   </delete>
   
   <insert id="insert" parameterType="com.better.entity.UserBean" >
-    insert into tbl_user (UID, USERNAME, PASS, EMAIL, MOBILE, STATUS, IS_ADMIN)
-    values (#{uid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{pass,jdbcType=VARCHAR}, 
+    insert into tbl_user (UID, USERNAME, SEX, HEAD, SIGNATURE, PASS, EMAIL, MOBILE, STATUS, ISADMIN)
+    values (#{uid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
+    #{head,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, #{pass,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=CHAR}, #{status,jdbcType=INTEGER}, 
-      #{isAdmin,jdbcType=SMALLINT})
+      #{departIds,jdbcType=VARCHAR},#{isAdmin,jdbcType=SMALLINT})
   </insert>
   
   <insert id="insertSelective" parameterType="com.better.entity.UserBean" >
@@ -74,6 +83,15 @@
       </if>
       <if test="username != null" >
         USERNAME,
+      </if>
+       <if test="sex != null" >
+        SEX,
+      </if>
+       <if test="head != null" >
+        HEAD,
+      </if>
+       <if test="signature != null" >
+        SIGNATURE,
       </if>
       <if test="pass != null" >
         PASS,
@@ -87,8 +105,11 @@
       <if test="status != null" >
         STATUS,
       </if>
+      <if test="departIds != null" >
+        DEPARTIDS,
+      </if>
       <if test="isAdmin != null" >
-        IS_ADMIN,
+        ISADMIN,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -97,6 +118,15 @@
       </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="head != null" >
+        #{head,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null" >
+        #{signature,jdbcType=VARCHAR},
       </if>
       <if test="pass != null" >
         #{pass,jdbcType=VARCHAR},
@@ -110,6 +140,9 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="departIds != null" >
+        #{departIds,jdbcType=VARCHAR},
+      </if>
       <if test="isAdmin != null" >
         #{isAdmin,jdbcType=SMALLINT},
       </if>
@@ -121,6 +154,15 @@
     <set >
       <if test="username != null" >
         USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+         <if test="sex != null" >
+        SEX = #{sex,jdbcType=INTEGER},
+      </if>
+         <if test="head != null" >
+        HEAD = #{head,jdbcType=VARCHAR},
+      </if>
+         <if test="signature != null" >
+        SIGNATURE = #{signature,jdbcType=VARCHAR},
       </if>
       <if test="pass != null" >
         PASS = #{pass,jdbcType=VARCHAR},
@@ -134,8 +176,11 @@
       <if test="status != null" >
         STATUS = #{status,jdbcType=INTEGER},
       </if>
+       <if test="departIds != null" >
+        EMAIL = #{departIds,jdbcType=VARCHAR},
+      </if>
       <if test="isAdmin != null" >
-        IS_ADMIN = #{isAdmin,jdbcType=SMALLINT},
+        ISADMIN = #{isAdmin,jdbcType=SMALLINT},
       </if>
     </set>
     where UID = #{uid,jdbcType=INTEGER}
@@ -144,11 +189,15 @@
   <update id="updateByPrimaryKey" parameterType="com.better.entity.UserBean" >
     update tbl_user
     set USERNAME = #{username,jdbcType=VARCHAR},
-      PASS = #{pass,jdbcType=VARCHAR},
-      EMAIL = #{email,jdbcType=VARCHAR},
-      MOBILE = #{mobile,jdbcType=CHAR},
-      STATUS = #{status,jdbcType=INTEGER},
-      IS_ADMIN = #{isAdmin,jdbcType=SMALLINT}
+    SEX = #{sex,jdbcType=INTEGER},
+    HEAD = #{head,jdbcType=VARCHAR},
+    SIGNATURE = #{signature,jdbcType=VARCHAR},
+    PASS = #{pass,jdbcType=VARCHAR},
+    EMAIL = #{email,jdbcType=VARCHAR},
+    MOBILE = #{mobile,jdbcType=CHAR},
+    STATUS = #{status,jdbcType=INTEGER},
+    DEPARTIDS = #{departIds,jdbcType=VARCHAR},
+    ISADMIN = #{isAdmin,jdbcType=SMALLINT}
     where UID = #{uid,jdbcType=INTEGER}
   </update>
   

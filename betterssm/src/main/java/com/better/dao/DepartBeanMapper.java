@@ -1,6 +1,8 @@
 package com.better.dao;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.better.entity.DepartBean;
@@ -67,4 +69,10 @@ public interface DepartBeanMapper {
      * @return
      */
     public int updateByPrimaryKey(DepartBean departBean);
+    /**
+     * 根据组织id查询所有部门
+     * @param orgId
+     * @return
+     */
+    public List<DepartBean> getListByOrgId(int orgId);
 }

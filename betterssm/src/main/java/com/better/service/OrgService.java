@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.better.entity.DepartBean;
 import com.better.entity.OrgBean;
 
 /**
  * OrgService:Interface<br>
- * 组织服务接口
+ * 组织服务接口,组织部门也在这里处理
  * 
  * @author zhulei
  * @version 1.0
@@ -55,4 +56,18 @@ public interface OrgService {
 	 * @return list
 	 */
 	public List<OrgBean> queryQrgList(int userId);
+	/**
+	 * 查询某组织下所有的部门列表
+	 * 
+	 * @param orgId 组织id
+	 * @return
+	 */
+	public List<DepartBean> queryDepartList(int orgId);
+	/**
+	 * 查询用户在某个组织中的所属部门
+	 * @param orgId 组织id
+	 * @param userId 用户id
+	 * @return
+	 */
+	public DepartBean queryUserDepart(int orgId,int userId);
 }

@@ -25,4 +25,15 @@ public class FriendServiceImpl implements FriendService {
 		return friendBeanMapper.selectFriendList(userId);
 	}
 
+	@Override
+	public int deleteFriend(FriendBean friendBean) {
+		int userId = friendBean.getUid();
+		int friendId = friendBean.getFid();
+		FriendBean friend = new FriendBean();
+		friend.setUid(userId);
+		friend.setFid(friendId);
+		int id = friendBeanMapper.selectByFriends(friendBean);
+		return friendBeanMapper.deleteByPrimaryKey(id);
+	}
+
 }

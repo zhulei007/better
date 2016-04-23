@@ -30,4 +30,11 @@ public interface FriendService {
 	 * @return
 	 */
 	public List<UserBean> queryFriendList(int userId);
+	
+	/**
+	 * 接触好友关系
+	 * @param friendBean
+	 * @return
+	 */
+	public int deleteFriend(FriendBean friendBean);
 }
